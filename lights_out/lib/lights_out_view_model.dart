@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:lights_out/lights_out_model.dart';
 
 class LightsOutViewModel extends ChangeNotifier {
-  final int _lightsCount;
   LightsOutModel _model;
 
-  LightsOutViewModel([this._lightsCount = 7])
-    : _model = LightsOutModel(_lightsCount);
+  LightsOutViewModel([lightsCount = 7]) : _model = LightsOutModel(lightsCount) {
+    _model.startNewGame();
+  }
 
   List<bool> get lights => _model.grid;
   int get clicks => _model.clicks;
@@ -19,7 +19,7 @@ class LightsOutViewModel extends ChangeNotifier {
   }
 
   void newGame() {
-    _model = LightsOutModel(_lightsCount);
+    _model.startNewGame();
     notifyListeners();
   }
 }

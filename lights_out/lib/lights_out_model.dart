@@ -5,7 +5,9 @@ class LightsOutModel {
   int clicks = 0;
   List<bool> grid;
 
-  LightsOutModel(this.lights) : grid = List.generate(lights, (_) => false) {
+  LightsOutModel(this.lights) : grid = List.generate(lights, (_) => false);
+
+  void startNewGame() {
     _randomizeLights();
     clicks = 0; // Reset clicks after randomization
   }
