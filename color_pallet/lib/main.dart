@@ -19,13 +19,33 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class ColorListPage extends StatelessWidget {
+class ColorListPage extends StatefulWidget {
   const ColorListPage({super.key});
 
   @override
+  State<ColorListPage> createState() => _ColorListPageState();
+}
+
+class _ColorListPageState extends State<ColorListPage> {
+  Color seedColor = Colors.deepPurple;
+
+  void _updateSeedColor(String hexCode) {
+    try {
+      final newColor = Color(int.parse(hexCode, radix: 16) | 0xFF000000);
+      setState(() {
+        seedColor = newColor;
+      });
+    } catch (e) {
+      // Handle invalid hex code
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Invalid hex code!')),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final seedColor = Colors.deepPurple;
+    final colorScheme = ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: seedColor)).colorScheme;
     final colors = {
       'Primary': colorScheme.primary,
       'On Primary': colorScheme.onPrimary,
@@ -59,6 +79,39 @@ class ColorListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Theme Colors'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () async {
+              final hexCode = await showDialog<String>(
+                context: context,
+                builder: (context) {
+                  String input = '';
+                  return AlertDialog(
+                    title: const Text('Enter Hex Code'),
+                    content: TextField(
+                      onChanged: (value) => input = value,
+                      decoration: const InputDecoration(hintText: 'e.g., FF5733'),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(input),
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  );
+                },
+              );
+              if (hexCode != null) {
+                _updateSeedColor(hexCode);
+              }
+            },
+          ),
+        ],
       ),
       body: ListView(
         children: [
