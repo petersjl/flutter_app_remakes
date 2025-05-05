@@ -25,7 +25,6 @@ class LightsOutViewModel extends ChangeNotifier {
   void newGame() {
     _model = LightsOutModel(this._lightsCount);
     _randomizeLights();
-    _model.clicks = 0; // Reset clicks
     notifyListeners();
   }
 
@@ -33,5 +32,6 @@ class LightsOutViewModel extends ChangeNotifier {
     for (int i = 0; i < _model.lights; i++) {
       _model.toggleLight(Random().nextInt(_model.lights));
     }
+    _model.clicks = 0; // Reset clicks after randomization
   }
 }
