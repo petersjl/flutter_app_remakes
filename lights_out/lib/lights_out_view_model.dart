@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:lights_out/lights_out_model.dart';
 
 class LightsOutViewModel extends ChangeNotifier {
-  LightsOutModel _model;
+  final LightsOutModel _model;
 
-  LightsOutViewModel([lightsCount = 7]) : _model = LightsOutModel(lightsCount) {
+  LightsOutViewModel({LightsOutModel? model, int lightsCount = 7})
+    : _model = model ?? LightsOutModel(lightsCount) {
     _model.startNewGame();
   }
 
